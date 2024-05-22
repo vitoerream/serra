@@ -13,7 +13,29 @@
 	</script> 
 </head> 
 
-<body> 
+<body>
+	<?php
+		$servername = "localhost";
+		$username = "root";
+		$password = "";
+		$dbname = "serra";		
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		$sql = "SELECT * FROM DHT22 ORDER BY ID ASC LIMIT 30;";
+		$result = $conn->query($sql) or die ('Query Error: ' . mysqli_error());
+		$time=Array();
+		$temp=Array();
+		$umi=Array();
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$time[]=$row["ID"];
+			$temp[]=$row["temp"];
+			$umi[]=$row["umi"];
+		}
+		$json_time = json_encode($time);
+		$json_temp = json_encode($temp);
+		$json_umi = json_encode($umi);
+		$conn->close();
+	?>
 	<h1 style="color:rgb(0, 128, 38);"> 
 		Serra 
 	</h1> 
@@ -25,22 +47,19 @@
 			height="350"> 
 	</canvas> 
 	<script> 
+		var time=<?php echo($json_time); ?>;
+		var temp=<?php echo($json_temp); ?>;
+		var umi=<?php echo($json_umi); ?>;
 		var ctx = 
 				document.getElementById('stackedArea').getContext('2d'); 
 		var myChart = new Chart(ctx, { 
 			type: 'line', 
 			data: { 
-				labels: ['30', 
-						'25', 
-						'20', 
-						'15', 
-						'10',
-                        '5',
-                        '0'], 
+				labels: time,
 				datasets: [ 
 					{ 
 						label: 'Temperatura', 
-						data: [1, 2, 3, 4, 5], 
+						data: temp,
 						backgroundColor: 'rgba(75, 192, 192, 0.5)', 
 						borderColor: 'rgba(75, 192, 192, 1)', 
 						borderWidth: 2, 
@@ -48,7 +67,7 @@
 					}, 
 					{ 
 						label: 'Umidita', 
-						data: [60, 10, 50, 30, 50], 
+						data: umi, 
 						backgroundColor: 'rgba(255, 99, 132, 0.5)', 
 						borderColor: 'rgba(255, 99, 132, 1)', 
 						borderWidth: 2, 
