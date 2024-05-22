@@ -1,9 +1,9 @@
 <?
 $servername = "localhost";
 $username = "root";
-$password = "pollo123";
+$password = "";
 $dbname = "temphumid";
-$pass = "rc23";
+$pass = "";
 $ID = $_POST['ID'];
 $temperature = $_POST['temp'];
 $umidita = $_POST['umi'];
