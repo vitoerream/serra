@@ -1,7 +1,8 @@
-#include <WiFiS3.h>
+#include <WiFiNINA.h>
+#include <utility/wifi_drv.h>
 #include <DHT.h>
 #define DHTPIN 8   //Pin a cui è connesso il sensore
-#define DHTTYPE DHT11   //Tipo di sensore che stiamo utilizzando (DHT22)
+#define DHTTYPE DHT22   //Tipo di sensore che stiamo utilizzando (DHT22)
 DHT dht(DHTPIN, DHTTYPE); //Inizializza oggetto chiamato "dht", parametri: pin a cui è connesso il sensore, tipo di dht 11/22
 //Variabili
 
@@ -11,9 +12,9 @@ float temp; //Variabile in cui verrà inserita la temperatura
 String url = "/input.php";
 
 //parametri
-const char ssid[] = "";  // Nome del WiFi (SSD)
+const char ssid[] = "Liceo_WIFI";  // Nome del WiFi (SSD)
 const char pass[] = "";   // Password del WIFI, in caso sia senza password lasciare vuoto -> "";
-const char* host = ""; //Indirizzo IP pubblico (in questo caso dinamico) del server online
+const char* host = "51.77.202.143"; //Indirizzo IP pubblico (in questo caso dinamico) del server online
 const int httpPort = 80; //post dell'HTTP, in genere si usa la porta 80
 String HTTP_METHOD = "POST";  //POST
 
@@ -77,7 +78,7 @@ void loop() {
   }
   //POST
   Serial.println("[CLIENT]->POST in uscita...");
-  client.print("POST " + url + " HTTP/1.1\r\n" +
+  client.println("POST " + url + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Content-Type: application/x-www-form-urlencoded\r\n" +
                "Content-Length: " + payload.length() + "\r\n" +
@@ -94,6 +95,21 @@ void loop() {
     Serial.println("\n[CLIENT]->Disconnessione dal server...");
     //Disconnessione client, server in attesa di una nuova connessione (in loop)
     client.stop();
+    unsigned long previousMillis = 0;
+    unsigned long interval = 30000;
+    void loop() {
+  unsigned long currentMillis = millis();
+
+  //Riconnessione in caso di disconnessione
+  if ((WiFi.status() != WL_CONNECTED) && (currentMillis - previousMillis >=interval)) {
+      Serial.print(millis());
+      Serial.println("Reconnecting to WiFi...");
+      WiFi.disconnect();
+      WiFi.reconnect();
+      previousMillis = currentMillis;
+   }
+      
+  }
     delay(5000);
 
 }
