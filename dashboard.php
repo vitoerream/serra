@@ -18,7 +18,7 @@
 		$servername = "localhost";
 		$username = "root";
 		$password = "";
-		$dbname = "temphumid";		
+		$dbname = "";		
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		// Check connection
 		$sql = "SELECT * FROM DHT22 ORDER BY ID DESC LIMIT 30;";
