@@ -12,9 +12,9 @@ float temp; //Variabile in cui verrà inserita la temperatura
 String url = "/input.php";
 
 //parametri
-const char ssid[] = "Liceo_WIFI";  // Nome del WiFi (SSD)
+const char ssid[] = "";  // Nome del WiFi (SSD)
 const char pass[] = "";   // Password del WIFI, in caso sia senza password lasciare vuoto -> "";
-const char* host = "51.77.202.143"; //Indirizzo IP pubblico (in questo caso dinamico) del server online
+const char* host = ""; //Indirizzo IP pubblico (in questo caso dinamico) del server online
 const int httpPort = 80; //post dell'HTTP, in genere si usa la porta 80
 String HTTP_METHOD = "POST";  //POST
 
