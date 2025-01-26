@@ -7,4 +7,5 @@ Server con:
     
 Arduino con modulo WIFI
 Sensore DHT
-  
+
+VPS OVH 1 euro al mese easy
